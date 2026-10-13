@@ -4,12 +4,9 @@
 Limited）官方網站，基於 [Astro](https://astro.build) 的繁體中文／英文雙語靜態站，
 通過 GitHub Actions 自動部署到 GitHub Pages。
 
-- 線上地址：https://muguangling.com/hk-icep/ （英文版 https://muguangling.com/hk-icep/en/）
+- 線上地址：https://icep.com.hk/ （英文版 https://icep.com.hk/en/）
 - 倉庫：https://github.com/WangYuBo/hk-icep
-
-> ⚠️ 本賬號的用戶站點綁定了 `muguangling.com`，因此項目站點都會被重定向到該域名下。
-> `https://wangyubo.github.io/hk-icep/` 會 301 跳轉到上面的地址。
-> 若要改用獨立域名，見文末「日後綁定自定義域名」。
+- 域名：`icep.com.hk`（2026-10 於 HKDNR 註冊，DNS 亦由 HKDNR 託管）
 
 ## 本地開發
 
@@ -93,12 +90,20 @@ push 到 `main` 分支即自動部署（`.github/workflows/deploy.yml`）。
 1. 倉庫 **Settings → Pages → Build and deployment → Source** 選 **GitHub Actions**
 2. push 到 `main`，等 Actions 跑完即可訪問
 
-### 日後綁定自定義域名
+### 自定義域名（已完成，此處留檔）
 
-1. 改 `astro.config.mjs`：`site` 改為域名，`base` 改為 `'/'`
-2. 在 `public/` 下新增 `CNAME` 檔案，內容為域名本身（如 `example.com`）
-3. 在域名註冊商處配置 DNS：
-   - 根域名 `example.com` 四條 A 記錄 → `185.199.108.153` / `185.199.109.153` /
-     `185.199.110.153` / `185.199.111.153`
-   - `www.example.com` CNAME → `wangyubo.github.io`
-4. 回到倉庫 **Settings → Pages → Custom domain** 填入域名並勾選 Enforce HTTPS
+`icep.com.hk` 綁定方式，與同賬號的 `east-west-press` 一致：**域名配置在倉庫
+Settings → Pages → Custom domain，不使用 `public/CNAME` 檔案。**
+
+DNS 由 HKDNR 託管，記錄如下：
+
+| 類型 | 主機 | 值 |
+|---|---|---|
+| A | `@` | `185.199.108.153` |
+| A | `@` | `185.199.109.153` |
+| A | `@` | `185.199.110.153` |
+| A | `@` | `185.199.111.153` |
+| CNAME | `www` | `wangyubo.github.io` |
+
+若日後更換域名：改 `astro.config.mjs` 的 `site`（`base` 保持 `'/'`），
+在倉庫 Settings → Pages 換上新域名，並同步更新上表 DNS 記錄。
