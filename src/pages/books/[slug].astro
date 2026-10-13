@@ -1,0 +1,16 @@
+---
+import { getCollection } from 'astro:content';
+import BookDetail from '../../components/BookDetail.astro';
+
+export async function getStaticPaths() {
+  const books = await getCollection('books', (b) => b.data.lang === 'zh-Hant');
+  return books.map((book) => ({
+    params: { slug: book.id.split('/').pop()! },
+    props: { book },
+  }));
+}
+
+const { book } = Astro.props;
+---
+
+<BookDetail book={book} lang="zh-Hant" />

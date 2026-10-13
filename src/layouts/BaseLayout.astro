@@ -1,0 +1,82 @@
+---
+import '../styles/global.css';
+import { t, withBase, altLangPath, langPrefix, htmlLang, type Lang } from '../i18n/ui';
+
+interface Props {
+  title: string;
+  lang: Lang;
+  /** 当前页去掉语言前缀后的路径（如 'books/'、''），用于生成语言切换链接 */
+  path: string;
+  /** 当前导航高亮项 */
+  active?: 'home' | 'about' | 'books' | 'contact';
+  /** 另一语言下没有对应页面时置为 true，隐藏语言切换，避免死链 */
+  hideLangSwitch?: boolean;
+}
+
+const { title, lang, path, active, hideLangSwitch = false } = Astro.props;
+const prefix = langPrefix(lang);
+
+const nav = [
+  { key: 'home', label: t(lang, 'nav.home'), href: withBase(prefix) },
+  { key: 'books', label: t(lang, 'nav.books'), href: withBase(`${prefix}books/`) },
+  { key: 'about', label: t(lang, 'nav.about'), href: withBase(`${prefix}about/`) },
+  { key: 'contact', label: t(lang, 'nav.contact'), href: withBase(`${prefix}contact/`) },
+] as const;
+
+const contactEmail = 'info@kfbook.org';
+---
+
+<html lang={htmlLang(lang)}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href={withBase('favicon.svg')} type="image/svg+xml" />
+    <meta name="description" content={t(lang, 'siteTagline')} />
+    <title>{title} | {t(lang, 'siteName')}</title>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container">
+        <a class="brand" href={withBase(prefix)}>
+          <img class="brand-logo" src={withBase('logo.svg')} alt={t(lang, 'siteName')} />
+          <span class="brand-text">
+            <span class="brand-name">{t(lang, 'siteName')}</span>
+            <span class="brand-tagline">{t(lang, 'siteTagline')}</span>
+          </span>
+        </a>
+        <nav class="site-nav">
+          {
+            nav.map((item) => (
+              <a href={item.href} aria-current={active === item.key ? 'page' : undefined}>
+                {item.label}
+              </a>
+            ))
+          }
+          {
+            !hideLangSwitch && (
+              <a class="lang-switch" href={withBase(altLangPath(lang, path))}>
+                {t(lang, 'nav.langSwitch')}
+              </a>
+            )
+          }
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <div class="container">
+        <p class="footer-legal">
+          © {new Date().getFullYear()} {t(lang, 'siteLegalName')}
+        </p>
+        <p class="footer-legal-en">{t(lang, 'siteLegalNameEn')}</p>
+        <p class="footer-meta">
+          {t(lang, 'footer.rights')} · <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>

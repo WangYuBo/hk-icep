@@ -1,0 +1,77 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BookCard from '../../components/BookCard.astro';
+import { t, withBase } from '../../i18n/ui';
+
+const featured = (
+  await getCollection('books', (b) => b.data.lang === 'en' && b.data.featured)
+).slice(0, 4);
+
+const services = [
+  { title: t('en', 'services.publishing.title'), desc: t('en', 'services.publishing.desc') },
+  { title: t('en', 'services.rights.title'), desc: t('en', 'services.rights.desc') },
+  { title: t('en', 'services.film.title'), desc: t('en', 'services.film.desc') },
+  { title: t('en', 'services.exchange.title'), desc: t('en', 'services.exchange.desc') },
+];
+---
+
+<BaseLayout title="Home" lang="en" path="" active="home">
+  <section class="hero">
+    <div class="container">
+      <h1>International Culture &amp; Education Press</h1>
+      <p>{t('en', 'siteTagline')}</p>
+    </div>
+  </section>
+
+  {
+    featured.length > 0 && (
+      <section class="section">
+        <div class="container">
+          <h2>{t('en', 'home.featured')}</h2>
+          <div class="book-grid">
+            {featured.map((book) => (
+              <BookCard book={book} lang="en" />
+            ))}
+          </div>
+          <p style="margin-top: 2rem;">
+            <a class="btn btn-outline" href={withBase('en/books/')}>
+              {t('en', 'home.viewAll')}
+            </a>
+          </p>
+        </div>
+      </section>
+    )
+  }
+
+  <section class="section section-alt">
+    <div class="container">
+      <h2>{t('en', 'services.title')}</h2>
+      <div class="service-grid">
+        {
+          services.map((service) => (
+            <div class="service-card">
+              <h3>{service.title}</h3>
+              <p>{service.desc}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container prose">
+      <h2>{t('en', 'home.aboutTitle')}</h2>
+      <p>
+        International Culture &amp; Education Press (Hong Kong) Co., Limited is a
+        publishing house incorporated in Hong Kong. Our business covers publishing and
+        distribution, rights and licensing agency, film and television production,
+        cultural investment, and international cultural exchange.
+      </p>
+      <p>
+        <a href={withBase('en/about/')}>{t('en', 'home.aboutCta')} →</a>
+      </p>
+    </div>
+  </section>
+</BaseLayout>

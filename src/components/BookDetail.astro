@@ -1,0 +1,82 @@
+---
+import { getCollection, render } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { t, withBase, langPrefix, type Lang } from '../i18n/ui';
+
+interface Props {
+  book: CollectionEntry<'books'>;
+  lang: Lang;
+}
+
+const { book, lang } = Astro.props;
+const slug = book.id.split('/').pop();
+const prefix = langPrefix(lang);
+const { Content } = await render(book);
+
+// 并非每本书都有另一语言的版本，没有就隐藏语言切换
+const otherLang: Lang = lang === 'en' ? 'zh-Hant' : 'en';
+const hasAltVersion = (await getCollection('books')).some((b) => b.id === `${otherLang}/${slug}`);
+---
+
+<BaseLayout
+  title={book.data.title}
+  lang={lang}
+  path={`books/${slug}/`}
+  active="books"
+  hideLangSwitch={!hasAltVersion}
+>
+  <div class="container section">
+    <a class="back-link" href={withBase(`${prefix}books/`)}>← {t(lang, 'book.back')}</a>
+    <article class="book-detail">
+      <div class="cover">
+        <img src={withBase(book.data.cover)} alt={book.data.title} />
+      </div>
+      <div>
+        <h1>{book.data.title}</h1>
+        {book.data.subtitle && <p class="subtitle">{book.data.subtitle}</p>}
+        <ul class="book-meta">
+          {
+            book.data.author && (
+              <li>
+                <strong>{t(lang, 'book.author')}:</strong> {book.data.author}
+              </li>
+            )
+          }
+          {
+            book.data.publisher && (
+              <li>
+                <strong>{t(lang, 'book.publisher')}:</strong> {book.data.publisher}
+              </li>
+            )
+          }
+          {book.data.isbn && <li><strong>{t(lang, 'book.isbn')}:</strong> {book.data.isbn}</li>}
+          {
+            book.data.format && (
+              <li>
+                <strong>{t(lang, 'book.format')}:</strong> {book.data.format}
+              </li>
+            )
+          }
+          {
+            book.data.publishDate && (
+              <li>
+                <strong>{t(lang, 'book.published')}:</strong> {book.data.publishDate}
+              </li>
+            )
+          }
+        </ul>
+        <div class="book-body">
+          <Content />
+        </div>
+        {
+          book.data.buyLink && (
+            <a class="btn" href={book.data.buyLink} target="_blank" rel="noopener">
+              {t(lang, 'book.buy')}
+            </a>
+          )
+        }
+      </div>
+    </article>
+  </div>
+</BaseLayout>

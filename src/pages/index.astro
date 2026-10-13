@@ -1,0 +1,75 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BookCard from '../components/BookCard.astro';
+import { t, withBase } from '../i18n/ui';
+
+const featured = (
+  await getCollection('books', (b) => b.data.lang === 'zh-Hant' && b.data.featured)
+).slice(0, 4);
+
+const services = [
+  { title: t('zh-Hant', 'services.publishing.title'), desc: t('zh-Hant', 'services.publishing.desc') },
+  { title: t('zh-Hant', 'services.rights.title'), desc: t('zh-Hant', 'services.rights.desc') },
+  { title: t('zh-Hant', 'services.film.title'), desc: t('zh-Hant', 'services.film.desc') },
+  { title: t('zh-Hant', 'services.exchange.title'), desc: t('zh-Hant', 'services.exchange.desc') },
+];
+---
+
+<BaseLayout title="首頁" lang="zh-Hant" path="" active="home">
+  <section class="hero">
+    <div class="container">
+      <h1>香港國際教科文出版社</h1>
+      <p>{t('zh-Hant', 'siteTagline')}</p>
+    </div>
+  </section>
+
+  {
+    featured.length > 0 && (
+      <section class="section">
+        <div class="container">
+          <h2>{t('zh-Hant', 'home.featured')}</h2>
+          <div class="book-grid">
+            {featured.map((book) => (
+              <BookCard book={book} lang="zh-Hant" />
+            ))}
+          </div>
+          <p style="margin-top: 2rem;">
+            <a class="btn btn-outline" href={withBase('books/')}>
+              {t('zh-Hant', 'home.viewAll')}
+            </a>
+          </p>
+        </div>
+      </section>
+    )
+  }
+
+  <section class="section section-alt">
+    <div class="container">
+      <h2>{t('zh-Hant', 'services.title')}</h2>
+      <div class="service-grid">
+        {
+          services.map((service) => (
+            <div class="service-card">
+              <h3>{service.title}</h3>
+              <p>{service.desc}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container prose">
+      <h2>{t('zh-Hant', 'home.aboutTitle')}</h2>
+      <p>
+        香港國際教科文出版社有限公司為在香港註冊成立的出版機構，業務涵蓋出版發行、版權代理、
+        影視製作運營、文化投資及國際文化交流。我們致力於推動中文學術成果與教育資源的國際傳播。
+      </p>
+      <p>
+        <a href={withBase('about/')}>{t('zh-Hant', 'home.aboutCta')} →</a>
+      </p>
+    </div>
+  </section>
+</BaseLayout>

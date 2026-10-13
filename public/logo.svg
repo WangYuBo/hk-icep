@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="香港國際教科文出版社">
+  <title>香港國際教科文出版社</title>
+  <!-- 上：地球——國際視野與文化交流 -->
+  <circle cx="32" cy="21" r="11.5" fill="none" stroke="#1b3a5c" stroke-width="2.6"/>
+  <ellipse cx="32" cy="21" rx="5" ry="11.5" fill="none" stroke="#b8945f" stroke-width="1.6"/>
+  <line x1="20.5" y1="21" x2="43.5" y2="21" stroke="#b8945f" stroke-width="1.6"/>
+  <!-- 下：攤開的書——教育與出版 -->
+  <path d="M32 34 C24 30.5 15.5 30.5 8 33.5 L8 54 C15.5 51 24 51 32 54.5 Z" fill="#1b3a5c"/>
+  <path d="M32 34 C40 30.5 48.5 30.5 56 33.5 L56 54 C48.5 51 40 51 32 54.5 Z" fill="#1b3a5c"/>
+  <line x1="32" y1="34" x2="32" y2="54.5" stroke="#b8945f" stroke-width="1.8"/>
+</svg>
