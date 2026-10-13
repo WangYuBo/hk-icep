@@ -4,7 +4,12 @@
 Limited）官方網站，基於 [Astro](https://astro.build) 的繁體中文／英文雙語靜態站，
 通過 GitHub Actions 自動部署到 GitHub Pages。
 
-- 線上地址：https://wangyubo.github.io/hk-icep/ （英文版 https://wangyubo.github.io/hk-icep/en/）
+- 線上地址：https://muguangling.com/hk-icep/ （英文版 https://muguangling.com/hk-icep/en/）
+- 倉庫：https://github.com/WangYuBo/hk-icep
+
+> ⚠️ 本賬號的用戶站點綁定了 `muguangling.com`，因此項目站點都會被重定向到該域名下。
+> `https://wangyubo.github.io/hk-icep/` 會 301 跳轉到上面的地址。
+> 若要改用獨立域名，見文末「日後綁定自定義域名」。
 
 ## 本地開發
 
